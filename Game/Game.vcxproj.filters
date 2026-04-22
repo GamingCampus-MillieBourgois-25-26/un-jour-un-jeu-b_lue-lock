@@ -33,6 +33,15 @@
     <ClCompile Include="PlayerS.cpp">
       <Filter>Bullet Hell Day1\BulletHell.cpp</Filter>
     </ClCompile>
+    <ClCompile Include="include\Demo\Tile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\Demo\DemoScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scenes\DefaultScene.h">
@@ -46,6 +55,18 @@
     </ClInclude>
     <ClInclude Include="PlayerS.h">
       <Filter>Bullet Hell Day1\BulletHell .h</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Demo\Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Demo\Tile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\Demo\DemoScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletS.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

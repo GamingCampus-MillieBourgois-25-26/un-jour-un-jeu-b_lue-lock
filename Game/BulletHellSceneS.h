@@ -15,8 +15,8 @@ namespace BulletHell {
 
             GameObject* playerObj = CreateGameObject("PlayerS");
 
-            //  playerObj->CreateComponent<SpriteRenderer>(playerTexture);
-              //playerObj->CreateComponent<PlayerS>(); // 3. Ajouter ton script de mouvement
+              playerObj->CreateComponent<SpriteRenderer>(playerTexture);
+              playerObj->CreateComponent<PlayerS>(); // 3. Ajouter ton script de mouvement
             playerObj->SetPosition({ 400.f, 300.f }); // Position de départ
 
         }
