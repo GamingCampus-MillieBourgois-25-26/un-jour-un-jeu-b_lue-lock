@@ -2,44 +2,38 @@
 
 #include "Player.h"
 #include "Assets/Texture.h"
-#include "Components/RectangleShapeRenderer.h"
 #include "Components/SpriteRenderer.h"
-#include "Components/SquareCollider.h"
 #include "Core/GameObject.h"
 #include "Core/Scene.h"
 #include "Modules/AssetsModule.h"
+#include "Components/RectangleShapeRenderer.h"
 
 class DefaultScene final : public Scene
 {
 public:
-	DefaultScene() : Scene("DefaultScene")
-	{
-		GameObject* player = CreateDummyGameObject("Player", 200.f, sf::Color::Red);
-		player->CreateComponent<Player>();
+    DefaultScene() : Scene("DefaultScene")
+    {
 
-		GameObject* enemy = CreateDummyGameObject("Enemy", 400.f, sf::Color::Blue);
+        GameObject* test = CreateGameObject("Test");
+        test->SetPosition({ 300, 300 });
 
-		GameObject* enemy2 = CreateDummyGameObject("Enemy2", 0.f, sf::Color::Green);
+        // PLAYER
+        GameObject* player = CreateGameObject("Player");
+        player->SetPosition(Maths::Vector2f(300.f, 300.f));
+        player->SetScale(Maths::Vector2f(0.3f, 0.3f));
+        player->SetRotation(sf::degrees(180.f));
 
-		AssetsModule* assets_module = Engine::GetInstance()->GetModuleManager()->GetModule<AssetsModule>();
-		Texture* texture = assets_module->LoadAsset<Texture>("logo.png");
+        player->CreateComponent<Player>();
 
-		player->CreateComponent<SpriteRenderer>(texture);
-	}
+        AssetsModule* assets = Engine::GetInstance()
+            ->GetModuleManager()
+            ->GetModule<AssetsModule>();
 
-	GameObject* CreateDummyGameObject(const std::string& _name, const float _position, const sf::Color _color)
-	{
-		GameObject* game_object = CreateGameObject(_name);
-		game_object->SetPosition(Maths::Vector2f(_position, _position));
+        Texture* playerTexture = assets->LoadAsset<Texture>("spaceShips_001.png");
 
-		SquareCollider* square_collider = game_object->CreateComponent<SquareCollider>();
-		square_collider->SetWidth(20.f);
-		square_collider->SetHeight(20.f);
-
-		RectangleShapeRenderer* shape_renderer = game_object->CreateComponent<RectangleShapeRenderer>();
-		shape_renderer->SetColor(_color);
-		shape_renderer->SetSize(Maths::Vector2f(200.f, 200.f));
-
-		return game_object;
-	}
+        if (playerTexture)
+        {
+            player->CreateComponent<SpriteRenderer>(playerTexture);
+        }
+    }
 };

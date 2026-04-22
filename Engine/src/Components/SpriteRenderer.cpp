@@ -18,6 +18,10 @@ void SpriteRenderer::Render(sf::RenderWindow* _window)
 
     sprite.setTextureRect(rect);
 
+    // --- PIVOT CENTER ---
+    sf::Vector2f size = static_cast<sf::Vector2f>(texture->GetTexture().getSize());
+    sprite.setOrigin(size * 0.5f);
+
     sprite.setPosition(static_cast<sf::Vector2f>(GetOwner()->GetPosition()));
     sprite.setRotation(GetOwner()->GetRotation());
     sprite.setScale(static_cast<sf::Vector2f>(GetOwner()->GetScale()));
