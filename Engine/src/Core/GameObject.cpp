@@ -1,34 +1,53 @@
 #include "Core/GameObject.h"
 
+#include <memory>
+#include "Core/Scene.h"
+
 GameObject::~GameObject()
 {
-    for (Component*& component : components)
-        delete component;
-
     components.clear();
 }
 
-std::vector<Component*>& GameObject::GetComponents()
+std::string GameObject::GetName() const {
+    return name;
+}
+
+Maths::Vector2<float> GameObject::GetPosition() const {
+    return position;
+}
+
+sf::Angle GameObject::GetRotation() const {
+    return rotation;
+}
+
+Maths::Vector2<float> GameObject::GetScale() const {
+    return scale;
+}
+
+void GameObject::SetName(const std::string& _name) {
+    name = _name;
+}
+
+void GameObject::SetPosition(const Maths::Vector2<float>& _position) {
+    position = _position;
+}
+
+void GameObject::SetRotation(const sf::Angle _rotation) {
+    rotation = _rotation;
+}
+
+void GameObject::SetScale(const Maths::Vector2<float>& _scale) {
+    scale = _scale;
+}
+
+std::vector<std::unique_ptr<Component>>& GameObject::GetComponents()
 {
     return components;
 }
 
-void GameObject::AddComponent(Component* _component)
-{
-    _component->SetOwner(this);
-    components.push_back(_component);
-}
-
-void GameObject::RemoveComponent(Component* _component)
-{
-    std::erase(components, _component);
-}
-
-#pragma region Events
-
 void GameObject::Awake() const
 {
-    for (Component* const& component : components)
+    for (const auto& component : components)
     {
         component->Awake();
     }
@@ -36,7 +55,7 @@ void GameObject::Awake() const
 
 void GameObject::Start() const
 {
-    for (Component* const& component : components)
+    for (const auto& component : components)
     {
         component->Start();
     }
@@ -44,7 +63,7 @@ void GameObject::Start() const
 
 void GameObject::Update(const float _delta_time) const
 {
-    for (Component* const& component : components)
+    for (const auto& component : components)
     {
         component->Update(_delta_time);
     }
@@ -52,7 +71,7 @@ void GameObject::Update(const float _delta_time) const
 
 void GameObject::PreRender() const
 {
-    for (Component* const& component : components)
+    for (const auto& component : components)
     {
         component->PreRender();
     }
@@ -60,7 +79,7 @@ void GameObject::PreRender() const
 
 void GameObject::Render(sf::RenderWindow* _window) const
 {
-    for (Component* const& component : components)
+    for (const auto& component : components)
     {
         component->Render(_window);
     }
@@ -68,7 +87,7 @@ void GameObject::Render(sf::RenderWindow* _window) const
 
 void GameObject::OnGUI() const
 {
-    for (Component* const& component : components)
+    for (const auto& component : components)
     {
         component->OnGUI();
     }
@@ -76,7 +95,7 @@ void GameObject::OnGUI() const
 
 void GameObject::PostRender() const
 {
-    for (Component* const& component : components)
+    for (const auto& component : components)
     {
         component->PostRender();
     }
@@ -84,7 +103,7 @@ void GameObject::PostRender() const
 
 void GameObject::OnDebug() const
 {
-    for (Component* const& component : components)
+    for (const auto& component : components)
     {
         component->OnDebug();
     }
@@ -92,23 +111,25 @@ void GameObject::OnDebug() const
 
 void GameObject::OnDebugSelected() const
 {
-    for (Component* const& component : components)
+    for (const auto& component : components)
     {
         component->OnDebugSelected();
     }
 }
 
-void GameObject::Present() const
+void GameObject::Present()
 {
-    for (Component* const& component : components)
+    for (const auto& component : components)
     {
         component->Present();
     }
+
+    DeleteMarkedComponents();
 }
 
 void GameObject::OnEnable() const
 {
-    for (Component* const& component : components)
+    for (const auto& component : components)
     {
         component->OnEnable();
     }
@@ -116,7 +137,7 @@ void GameObject::OnEnable() const
 
 void GameObject::OnDisable() const
 {
-    for (Component* const& component : components)
+    for (const auto& component : components)
     {
         component->OnDisable();
     }
@@ -124,7 +145,7 @@ void GameObject::OnDisable() const
 
 void GameObject::Destroy() const
 {
-    for (Component* const& component : components)
+    for (const auto& component : components)
     {
         component->Destroy();
     }
@@ -132,10 +153,66 @@ void GameObject::Destroy() const
 
 void GameObject::Finalize() const
 {
-    for (Component* const& component : components)
+    for (const auto& component : components)
     {
         component->Finalize();
     }
 }
 
-#pragma endregion
+void GameObject::Enable()
+{
+    if (!enabled)
+    {
+        enabled = true;
+        OnEnable();
+    }
+}
+
+void GameObject::Disable()
+{
+    if (enabled)
+    {
+        enabled = false;
+        OnDisable();
+    }
+}
+
+bool GameObject::IsEnabled() const
+{
+    return enabled;
+}
+
+void GameObject::MarkForDeletion()
+{
+    Disable();
+    markedForDeletion = true;
+}
+
+bool GameObject::IsMarkedForDeletion() const
+{
+    return markedForDeletion;
+}
+
+void GameObject::SetScene(Scene* _scene)
+{
+    scene = _scene;
+}
+
+Scene* GameObject::GetScene() const
+{
+    return scene;
+}
+
+void GameObject::DeleteMarkedComponents()
+{
+    std::erase_if(components, [](const std::unique_ptr<Component>& _component)
+    {
+        if (!_component->IsMarkedForDeletion())
+            return false;
+
+        _component->Destroy();
+        _component->Finalize();
+
+        return true;
+    });
+}
