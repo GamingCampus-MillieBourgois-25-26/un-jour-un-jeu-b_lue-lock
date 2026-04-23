@@ -13,25 +13,16 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Bullet Hell Day1">
+    <Filter Include="Tower Defence">
+      <UniqueIdentifier>{62f3db49-e692-4bae-9d1b-c6910e966ea0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bullet Hell">
       <UniqueIdentifier>{6b201399-890a-4660-90f4-bc19139606a5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Bullet Hell Day1\BulletHell.cpp">
-      <UniqueIdentifier>{e6ee3368-2ed1-4fb5-b252-0cfba18f5b64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Bullet Hell Day1\BulletHell .h">
-      <UniqueIdentifier>{fbae6f3d-9dcd-4b2f-8d84-0e852c442443}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletHellSceneS.cpp">
-      <Filter>Bullet Hell Day1\BulletHell.cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerS.cpp">
-      <Filter>Bullet Hell Day1\BulletHell.cpp</Filter>
     </ClCompile>
     <ClCompile Include="include\Demo\Tile.cpp">
       <Filter>Source Files</Filter>
@@ -39,22 +30,25 @@
     <ClCompile Include="Scenes\Demo\DemoScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerS.cpp">
+      <Filter>Bullet Hell</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletHellSceneS.cpp">
+      <Filter>Bullet Hell</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneTD.cpp">
+      <Filter>Tower Defence</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTD.cpp">
+      <Filter>Tower Defence</Filter>
+    </ClCompile>
     <ClCompile Include="BulletS.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Bullet Hell</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scenes\DefaultScene.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletHellSceneS.h">
-      <Filter>Bullet Hell Day1\BulletHell .h</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerS.h">
-      <Filter>Bullet Hell Day1\BulletHell .h</Filter>
     </ClInclude>
     <ClInclude Include="include\Demo\Player.h">
       <Filter>Header Files</Filter>
@@ -65,8 +59,20 @@
     <ClInclude Include="Scenes\Demo\DemoScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerS.h">
+      <Filter>Bullet Hell</Filter>
+    </ClInclude>
     <ClInclude Include="BulletS.h">
-      <Filter>Header Files</Filter>
+      <Filter>Bullet Hell</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletHellSceneS.h">
+      <Filter>Bullet Hell</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTD.h">
+      <Filter>Tower Defence</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneTD.h">
+      <Filter>Tower Defence</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
