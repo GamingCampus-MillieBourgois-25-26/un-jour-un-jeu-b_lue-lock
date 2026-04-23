@@ -1,27 +1,27 @@
-#pragma once
-#include "CellType.h"
+﻿#pragma once
 #include "Core/Scene.h"
-#include "SFML/Graphics.hpp"
+#include "CellType.h"
 #include "GridRenderer.h"
+#include "WaveManager.h"
+#include "TowerPlacementSystem.h"
 
 namespace TowerDefence {
 
     class TowerDefenseScene final : public Scene {
-
     public:
 
         TowerDefenseScene();
 
-        static constexpr int GRID_WIDTH = 20;
-        static constexpr int GRID_HEIGHT = 12;
+        static constexpr int   GRID_WIDTH = 20;
+        static constexpr int   GRID_HEIGHT = 12;
         static constexpr float CELL_SIZE = 50.f;
-
-        std::vector<std::vector<CellType>> grid;
 
     private:
 
         void InitGrid();
 
-        Maths::Vector2f GridToWorld(int x, int y) const;
+        std::vector<std::vector<CellType>> grid;
+        std::vector<Maths::Vector2i>       enemyPath;
     };
+
 }

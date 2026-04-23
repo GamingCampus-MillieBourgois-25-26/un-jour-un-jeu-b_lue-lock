@@ -48,10 +48,22 @@
     <ClCompile Include="CellType.cpp">
       <Filter>Tower Defence</Filter>
     </ClCompile>
-    <ClCompile Include="ButtonComponent.cpp">
+    <ClCompile Include="MenuScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MenuScene.cpp">
+    <ClCompile Include="WaveManager.cpp">
+      <Filter>Tower Defence</Filter>
+    </ClCompile>
+    <ClCompile Include="TowerPlacementSystem.cpp">
+      <Filter>Tower Defence</Filter>
+    </ClCompile>
+    <ClCompile Include="TowerComponent.cpp">
+      <Filter>Tower Defence</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyComponent.cpp">
+      <Filter>Tower Defence</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -88,6 +100,18 @@
     </ClInclude>
     <ClInclude Include="MenuScene.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyComponent.h">
+      <Filter>Tower Defence</Filter>
+    </ClInclude>
+    <ClInclude Include="TowerComponent.h">
+      <Filter>Tower Defence</Filter>
+    </ClInclude>
+    <ClInclude Include="TowerPlacementSystem.h">
+      <Filter>Tower Defence</Filter>
+    </ClInclude>
+    <ClInclude Include="WaveManager.h">
+      <Filter>Tower Defence</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

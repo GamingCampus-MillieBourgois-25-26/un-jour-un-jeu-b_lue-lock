@@ -1,0 +1,70 @@
+﻿#include "TowerPlacementSystem.h"
+#include "TowerComponent.h"
+#include "Core/Scene.h"
+#include "Core/GameObject.h"
+#include "InputModule.h"
+
+namespace TowerDefence {
+
+    void TowerPlacementSystem::Init(
+        std::vector<std::vector<CellType>>* g,
+        const std::vector<Maths::Vector2i>& path,
+        int w, int h, float cs)
+    {
+        grid = g;
+        enemyPath = path;
+        gridWidth = w;
+        gridHeight = h;
+        cellSize = cs;
+    }
+
+    void TowerPlacementSystem::Update(float dt)
+    {
+        bool clicking = InputModule::GetMouseButtonDown(sf::Mouse::Button::Left);
+
+        if (clicking && !wasClickedLastFrame)
+        {
+            Maths::Vector2i mouse = InputModule::GetMousePosition();
+
+            int gx = static_cast<int>(mouse.x / cellSize);
+            int gy = static_cast<int>(mouse.y / cellSize);
+
+            if (CanPlace(gx, gy))
+                PlaceTower(gx, gy);
+        }
+
+        wasClickedLastFrame = clicking;
+    }
+
+    bool TowerPlacementSystem::CanPlace(int gx, int gy) const
+    {
+        if (gx < 0 || gx >= gridWidth || gy < 0 || gy >= gridHeight)
+            return false;
+
+        if ((*grid)[gy][gx] != CellType::Empty)
+            return false;
+
+        for (const auto& cell : enemyPath)
+            if (cell.x == gx && cell.y == gy)
+                return false;
+
+        return true;
+    }
+
+    void TowerPlacementSystem::PlaceTower(int gx, int gy)
+    {
+        (*grid)[gy][gx] = CellType::Tower;
+
+        Scene* scene = GetOwner()->GetScene();
+        GameObject* obj = scene->CreateGameObject("Tower");
+        auto* tower = obj->CreateComponent<TowerComponent>();
+        tower->cellSize = cellSize;
+        obj->SetPosition(GridToWorld(gx, gy));
+    }
+
+    Maths::Vector2f TowerPlacementSystem::GridToWorld(int gx, int gy) const
+    {
+        return Maths::Vector2f(gx * cellSize, gy * cellSize);
+    }
+
+}
