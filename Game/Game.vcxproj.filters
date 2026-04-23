@@ -36,22 +36,22 @@
     <ClCompile Include="BulletHellSceneS.cpp">
       <Filter>Bullet Hell</Filter>
     </ClCompile>
-    <ClCompile Include="SceneTD.cpp">
-      <Filter>Tower Defence</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerTD.cpp">
-      <Filter>Tower Defence</Filter>
-    </ClCompile>
     <ClCompile Include="BulletS.cpp">
       <Filter>Bullet Hell</Filter>
     </ClCompile>
     <ClCompile Include="TowerDefenseScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CellType.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Tower Defence</Filter>
     </ClCompile>
     <ClCompile Include="GridRenderer.cpp">
+      <Filter>Tower Defence</Filter>
+    </ClCompile>
+    <ClCompile Include="CellType.cpp">
+      <Filter>Tower Defence</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,19 +74,19 @@
     <ClInclude Include="BulletHellSceneS.h">
       <Filter>Bullet Hell</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerTD.h">
+    <ClInclude Include="GridRenderer.h">
       <Filter>Tower Defence</Filter>
     </ClInclude>
-    <ClInclude Include="SceneTD.h">
+    <ClInclude Include="CellType.h">
       <Filter>Tower Defence</Filter>
     </ClInclude>
     <ClInclude Include="TowerDefenseScene.h">
+      <Filter>Tower Defence</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CellType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GridRenderer.h">
+    <ClInclude Include="MenuScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

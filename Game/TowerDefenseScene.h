@@ -4,21 +4,24 @@
 #include "SFML/Graphics.hpp"
 #include "GridRenderer.h"
 
-class TowerDefenseScene final : public Scene {
+namespace TowerDefence {
 
-public:
+    class TowerDefenseScene final : public Scene {
 
-    TowerDefenseScene();
+    public:
 
-    static constexpr int GRID_WIDTH = 20;
-    static constexpr int GRID_HEIGHT = 12;
-    static constexpr float CELL_SIZE = 50.f;
+        TowerDefenseScene();
 
-    std::vector<std::vector<CellType>> grid;
+        static constexpr int GRID_WIDTH = 20;
+        static constexpr int GRID_HEIGHT = 12;
+        static constexpr float CELL_SIZE = 50.f;
 
-private:
+        std::vector<std::vector<CellType>> grid;
 
-    void InitGrid();
+    private:
 
-    Maths::Vector2f GridToWorld(int x, int y) const;
-};
+        void InitGrid();
+
+        Maths::Vector2f GridToWorld(int x, int y) const;
+    };
+}

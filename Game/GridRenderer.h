@@ -2,13 +2,17 @@
 #include "SFML/Graphics.hpp"
 #include "Core/Component.h"
 
-class GridRenderer : public Component {
+namespace TowerDefence {
 
-public:
+    class GridRenderer : public Component {
 
-    void Render(sf::RenderWindow* window) override;
+    public:
 
-    int width;
-    int height;
-    float cellSize;
-};
+        void Render(sf::RenderWindow* window) override;
+
+        int width;
+        int height;
+        float cellSize;
+    };
+
+}

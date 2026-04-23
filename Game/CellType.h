@@ -1,10 +1,13 @@
 #pragma once
 
-enum class CellType {
+namespace TowerDefence {
 
-    Empty,
-    Path,
-    Tower,
-    Spawn,
-    Goal
-};
+    enum class CellType {
+
+        Empty,
+        Path,
+        Tower,
+        Spawn,
+        Goal
+    };
+}

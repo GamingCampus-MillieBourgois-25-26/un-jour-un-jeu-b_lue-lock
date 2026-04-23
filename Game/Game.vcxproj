@@ -96,28 +96,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BulletS.cpp" />
+    <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="CellType.cpp" />
     <ClCompile Include="GridRenderer.cpp" />
     <ClCompile Include="include\Demo\Tile.cpp" />
     <ClCompile Include="BulletHellSceneS.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="PlayerTD.cpp" />
+    <ClCompile Include="MenuScene.cpp" />
     <ClCompile Include="Scenes\Demo\DemoScene.cpp" />
     <ClCompile Include="PlayerS.cpp" />
-    <ClCompile Include="SceneTD.cpp" />
     <ClCompile Include="TowerDefenseScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BulletS.h" />
+    <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="CellType.h" />
     <ClInclude Include="GridRenderer.h" />
     <ClInclude Include="include\Demo\Player.h" />
     <ClInclude Include="include\Demo\Tile.h" />
-    <ClInclude Include="PlayerTD.h" />
+    <ClInclude Include="MenuScene.h" />
     <ClInclude Include="Scenes\Demo\DemoScene.h" />
     <ClInclude Include="BulletHellSceneS.h" />
     <ClInclude Include="PlayerS.h" />
-    <ClInclude Include="SceneTD.h" />
     <ClInclude Include="TowerDefenseScene.h" />
   </ItemGroup>
   <ItemGroup>
