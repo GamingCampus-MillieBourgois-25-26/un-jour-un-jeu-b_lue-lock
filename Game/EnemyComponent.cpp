@@ -1,5 +1,6 @@
 #include "EnemyComponent.h"
 #include "Core/GameObject.h"
+#include "Core/Scene.h"
 #include <cmath>
 
 namespace TowerDefence {
@@ -18,6 +19,8 @@ namespace TowerDefence {
         cellSize = cs;
         currentWaypoint = 0;
         finished = false;
+        dead = false;
+        hp = maxHP;
 
         if (!path.empty())
         {
@@ -26,34 +29,39 @@ namespace TowerDefence {
         }
     }
 
+    void EnemyComponent::TakeDamage(float amount)
+    {
+        if (dead) return;
+        hp -= amount;
+        if (hp <= 0.f)
+        {
+            dead = true;
+            GetOwner()->GetScene()->DestroyGameObject(GetOwner());
+        }
+    }
+
     void EnemyComponent::Update(float dt)
     {
-        if (finished || path.empty()) return;
+        if (finished || dead || path.empty()) return;
 
         Maths::Vector2f pos = GetOwner()->GetPosition();
-
-        // Vecteur vers la cible
         float dx = worldTarget.x - pos.x;
         float dy = worldTarget.y - pos.y;
         float dist = std::sqrt(dx * dx + dy * dy);
 
         if (dist <= speed * dt)
         {
-            // On est arrivé à cette case — snap et passer à la suivante
             GetOwner()->SetPosition(worldTarget);
             currentWaypoint++;
-
             if (currentWaypoint >= static_cast<int>(path.size()))
             {
                 finished = true;
                 return;
             }
-
             worldTarget = GridToWorld(path[currentWaypoint]);
         }
         else
         {
-            // Avancer vers la cible
             float nx = dx / dist;
             float ny = dy / dist;
             GetOwner()->SetPosition(Maths::Vector2f(
@@ -65,17 +73,37 @@ namespace TowerDefence {
 
     void EnemyComponent::Render(sf::RenderWindow* window)
     {
-        if (finished) return;
+        if (finished || dead) return;
 
         Maths::Vector2f pos = GetOwner()->GetPosition();
+        float radius = cellSize * 0.35f;
 
-        sf::CircleShape circle(cellSize * 0.35f);
+        // Corps
+        sf::CircleShape circle(radius);
         circle.setFillColor(sf::Color::Red);
-        circle.setOrigin(sf::Vector2f(cellSize * 0.35f, cellSize * 0.35f));
+        circle.setOrigin(sf::Vector2f(radius, radius));
         circle.setPosition(sf::Vector2f(pos.x, pos.y));
         window->draw(circle);
+
+        // Barre de vie (fond gris + vert)
+        float barW = cellSize * 0.8f;
+        float barH = 5.f;
+        float barX = pos.x - barW * 0.5f;
+        float barY = pos.y - radius - 8.f;
+
+        sf::RectangleShape bgBar(sf::Vector2f(barW, barH));
+        bgBar.setFillColor(sf::Color(80, 80, 80));
+        bgBar.setPosition(sf::Vector2f(barX, barY));
+        window->draw(bgBar);
+
+        float ratio = std::max(0.f, hp / maxHP);
+        sf::RectangleShape hpBar(sf::Vector2f(barW * ratio, barH));
+        hpBar.setFillColor(sf::Color::Green);
+        hpBar.setPosition(sf::Vector2f(barX, barY));
+        window->draw(hpBar);
     }
 
     bool EnemyComponent::IsFinished() const { return finished; }
+    bool EnemyComponent::IsDead()     const { return dead; }
 
 }

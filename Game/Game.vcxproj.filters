@@ -66,6 +66,9 @@
     <ClCompile Include="ButtonComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ProjectileComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Demo\Player.h">
@@ -112,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="WaveManager.h">
       <Filter>Tower Defence</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectileComponent.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

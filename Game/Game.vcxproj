@@ -104,6 +104,7 @@
     <ClCompile Include="BulletHellSceneS.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuScene.cpp" />
+    <ClCompile Include="ProjectileComponent.cpp" />
     <ClCompile Include="Scenes\Demo\DemoScene.cpp" />
     <ClCompile Include="PlayerS.cpp" />
     <ClCompile Include="TowerComponent.cpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="include\Demo\Player.h" />
     <ClInclude Include="include\Demo\Tile.h" />
     <ClInclude Include="MenuScene.h" />
+    <ClInclude Include="ProjectileComponent.h" />
     <ClInclude Include="Scenes\Demo\DemoScene.h" />
     <ClInclude Include="BulletHellSceneS.h" />
     <ClInclude Include="PlayerS.h" />
