@@ -1,5 +1,7 @@
 ﻿#include "TowerComponent.h"
 #include "EnemyComponent.h"
+#include "ProjectileComponent.h"
+#include "SpawnQueue.h"
 #include "Core/GameObject.h"
 #include "Core/Scene.h"
 #include <cmath>
@@ -17,8 +19,8 @@ namespace TowerDefence {
         EnemyComponent* target = FindClosestEnemy();
         if (target)
         {
-            target->TakeDamage(damage);
             hasPendingShot = true;
+            // On capture le nom ICI, avant que Present() soit appelé
             pendingTarget = target->GetOwner()->GetName();
         }
     }
@@ -26,18 +28,18 @@ namespace TowerDefence {
     void TowerComponent::Render(sf::RenderWindow* window)
     {
         Maths::Vector2f pos = GetOwner()->GetPosition();
-        float radius = cellSize * 0.4f;
+        float half = cellSize * 0.5f;
 
-        // Corps de la tour
-        sf::CircleShape body(radius);
+        // Corps de la tour (carré bleu centré sur la cellule)
+        sf::RectangleShape body(sf::Vector2f(cellSize * 0.8f, cellSize * 0.8f));
         body.setFillColor(color);
-        body.setPosition({ pos.x - radius, pos.y - radius });
+        body.setPosition({ pos.x - cellSize * 0.4f, pos.y - cellSize * 0.4f });
         window->draw(body);
 
-        // Cercle de portée (semi-transparent)
+        
         sf::CircleShape rangeCircle(range);
         rangeCircle.setFillColor(sf::Color::Transparent);
-        rangeCircle.setOutlineColor(sf::Color(255, 255, 255, 60));
+        rangeCircle.setOutlineColor(sf::Color(100, 180, 255, 50));
         rangeCircle.setOutlineThickness(1.f);
         rangeCircle.setPosition({ pos.x - range, pos.y - range });
         window->draw(rangeCircle);
@@ -45,8 +47,22 @@ namespace TowerDefence {
 
     void TowerComponent::Present()
     {
+        if (!hasPendingShot) return;
         hasPendingShot = false;
+
+        Scene* scene = GetOwner()->GetScene();
+        Maths::Vector2f towerPos = GetOwner()->GetPosition();
+        std::string target = pendingTarget;  
+        float   dmg = damage;
         pendingTarget.clear();
+
+        SpawnQueue::Get().Push([scene, towerPos, target, dmg]()
+            {
+                GameObject* proj = scene->CreateGameObject("Projectile_" + target);
+                proj->SetPosition(towerPos);
+                auto* pc = proj->CreateComponent<ProjectileComponent>();
+                pc->Init(target, dmg, 300.f);
+            });
     }
 
     EnemyComponent* TowerComponent::FindClosestEnemy()
@@ -56,8 +72,7 @@ namespace TowerDefence {
 
         Maths::Vector2f pos = GetOwner()->GetPosition();
         Scene* scene = GetOwner()->GetScene();
-        if (!scene)
-            return nullptr;
+        if (!scene) return nullptr;
 
         for (const auto& go : scene->GetGameObjects())
         {
@@ -79,4 +94,4 @@ namespace TowerDefence {
         return closest;
     }
 
-} // namespace TowerDefence
+}

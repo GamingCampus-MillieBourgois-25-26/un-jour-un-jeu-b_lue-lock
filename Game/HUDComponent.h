@@ -4,14 +4,17 @@
 #include <SFML/Graphics.hpp>
 
 namespace TowerDefence {
-
     class HUDComponent : public Component
     {
     public:
+        
+        HUDComponent() = default;
+        HUDComponent(const HUDComponent&) = delete;
+        HUDComponent& operator=(const HUDComponent&) = delete;
+
         void Start()  override;
         void Render(sf::RenderWindow* window) override;
 
-        // Coût d'une tour affiché dans le HUD
         int towerCost = 50;
 
     private:

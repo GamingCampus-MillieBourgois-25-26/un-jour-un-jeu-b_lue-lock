@@ -1,5 +1,6 @@
 #pragma once
 #include "Core/Component.h"
+
 #include "SFML/Graphics.hpp"
 
 namespace TowerDefence {
@@ -15,7 +16,7 @@ namespace TowerDefence {
         void Present() override;
 
         float cellSize = 50.f;
-        float range = 150.f;
+        float range = 80.f;
         float fireRate = 1.f;
         float damage = 20.f;
 

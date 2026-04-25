@@ -4,6 +4,8 @@
 #include "GridRenderer.h"
 #include "WaveManager.h"
 #include "TowerPlacementSystem.h"
+#include "BaseTowerComponent.h"
+#include "HUDComponent.h"
 
 namespace TowerDefence {
 

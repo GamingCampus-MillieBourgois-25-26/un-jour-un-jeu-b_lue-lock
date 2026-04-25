@@ -5,11 +5,29 @@ namespace TowerDefence {
 
     void HUDComponent::Start()
     {
-        // Tente de charger une police système
-        if (font.openFromFile("C:/Windows/Fonts/arial.ttf"))
-            fontLoaded = true;
-        else if (font.openFromFile("arial.ttf"))
-            fontLoaded = true;
+        if (fontLoaded) return;
+
+        // Cherche la police dans l'ordre
+        const char* paths[] = {
+            "assets/arial.ttf",
+            "arial.ttf",
+            "C:/Windows/Fonts/arial.ttf",
+            "C:/Windows/Fonts/segoeui.ttf",
+            "C:/Windows/Fonts/tahoma.ttf",
+            nullptr
+        };
+
+        for (int i = 0; paths[i] != nullptr; ++i)
+        {
+            if (font.openFromFile(paths[i]))
+            {
+                fontLoaded = true;
+                return;
+            }
+        }
+
+        // Si aucune police trouvée : on continue sans planter
+        // Render() vérifie fontLoaded avant de dessiner
     }
 
     void HUDComponent::DrawText(sf::RenderWindow* window,

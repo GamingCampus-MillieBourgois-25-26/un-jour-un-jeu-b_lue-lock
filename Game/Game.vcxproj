@@ -95,6 +95,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseTowerComponent.cpp" />
     <ClCompile Include="BulletS.cpp" />
     <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="CellType.cpp" />
@@ -118,6 +119,7 @@
     <ClCompile Include="WaveManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseTowerComponent.h" />
     <ClInclude Include="BulletS.h" />
     <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="CellType.h" />

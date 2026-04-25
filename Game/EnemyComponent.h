@@ -1,6 +1,7 @@
 #pragma once
 #include "Core/Component.h"
 #include "Maths/Vector2.h"
+#include "BaseTowerComponent.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 
