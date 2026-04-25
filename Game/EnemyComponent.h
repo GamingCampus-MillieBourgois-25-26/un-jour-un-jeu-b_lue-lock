@@ -13,20 +13,21 @@ namespace TowerDefence {
         void Update(float dt) override;
         void Render(sf::RenderWindow* window) override;
         void Present() override;
+
         void  TakeDamage(float amount);
         bool  IsFinished() const;
         bool  IsDead()     const;
 
         float maxHP = 100.f;
         float hp = 100.f;
+        int   reward = 25;       // argent donné à la mort
+        int   damage = 1;        // dégâts au joueur si arrivé au bout
 
     private:
         std::vector<Maths::Vector2i> path;
         float cellSize = 50.f;
-
         int   currentWaypoint = 0;
         float speed = 120.f;
-
         Maths::Vector2f worldTarget;
         bool  finished = false;
         bool  dead = false;

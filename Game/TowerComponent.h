@@ -4,7 +4,7 @@
 
 namespace TowerDefence {
 
-    class EnemyComponent; 
+    class EnemyComponent;
 
     class TowerComponent : public Component {
 

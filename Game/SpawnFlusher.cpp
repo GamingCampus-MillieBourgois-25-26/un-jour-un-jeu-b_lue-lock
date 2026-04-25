@@ -1,11 +1,17 @@
-#include "SpawnFlusher.h"
+#pragma once
+#include "Core/Component.h"
 #include "SpawnQueue.h"
 
 namespace TowerDefence {
 
-    void SpawnFlusher::Present()
-    {
-        SpawnQueue::Get().Flush();
-    }
+    class SpawnFlusher : public Component {
 
+    public:
+
+        void Present() override {
+
+            SpawnQueue::Get().Flush();
+
+        }
+    };
 }

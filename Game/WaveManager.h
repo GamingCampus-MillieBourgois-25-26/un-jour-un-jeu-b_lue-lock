@@ -6,9 +6,10 @@
 
 namespace TowerDefence {
 
-    class WaveManager : public Component
-    {
+    class WaveManager : public Component {
+
     public:
+
         void SetConfig(const std::vector<Maths::Vector2i>& path, float cellSize);
         void Start()          override;
         void Update(float dt) override;
@@ -23,6 +24,7 @@ namespace TowerDefence {
         bool IsAllWavesDone() const { return allWavesDone; }
 
     private:
+
         void SpawnEnemy();
 
         std::vector<Maths::Vector2i> enemyPath;

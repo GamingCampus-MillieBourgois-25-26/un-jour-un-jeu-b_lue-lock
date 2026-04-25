@@ -100,7 +100,9 @@
     <ClCompile Include="CellType.cpp" />
     <ClCompile Include="ClickerComponent.cpp" />
     <ClCompile Include="EnemyComponent.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GridRenderer.cpp" />
+    <ClCompile Include="HUDComponent.cpp" />
     <ClCompile Include="include\Demo\Tile.cpp" />
     <ClCompile Include="BulletHellSceneS.cpp" />
     <ClCompile Include="main.cpp" />
@@ -121,7 +123,9 @@
     <ClInclude Include="CellType.h" />
     <ClInclude Include="ClickerComponent.h" />
     <ClInclude Include="EnemyComponent.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="GridRenderer.h" />
+    <ClInclude Include="HUDComponent.h" />
     <ClInclude Include="include\Demo\Player.h" />
     <ClInclude Include="include\Demo\Tile.h" />
     <ClInclude Include="MenuScene.h" />

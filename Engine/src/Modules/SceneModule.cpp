@@ -4,6 +4,8 @@
 
 #include "ModuleManager.h"
 
+
+
 SceneModule::SceneModule() : Module()
 {
 }
@@ -137,17 +139,18 @@ void SceneModule::Present()
 {
     Module::Present();
 
-    if (activeScene)  activeScene->Present();
+    if (activeScene)
+        activeScene->Present();
 
-    
-    if (nextFrameScene != nullptr) {
+    if (onPresent)
+        onPresent();
 
+    if (nextFrameScene != nullptr)
+    {
         if (activeScene != nullptr)
             activeScene->MarkForDeletion();
-
         activeScene = nextFrameScene;
         nextFrameScene = nullptr;
-
         activeScene->Awake();
         activeScene->Start();
     }
@@ -203,13 +206,13 @@ void SceneModule::DeleteMarkedScenes()
             if (!_scene->IsMarkedForDeletion())
                 return false;
 
-            if (activeScene == _scene.get())   // ← VÉRIFICATION AJOUTÉE
+            if (activeScene == _scene.get())  
                 activeScene = nullptr;
 
             _scene->Destroy();
             _scene->Finalize();
-       
-            //Logger::Log(ELogLevel::Debug, "Scene {} deleted.", _scene->GetName());
+
+           
 
             return true;
         });

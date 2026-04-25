@@ -10,9 +10,11 @@ namespace TowerDefence {
 
         void Render(sf::RenderWindow* window) override;
 
-        int width;
-        int height;
-        float cellSize;
+        int width = 20;
+        int height = 12;
+        float cellSize = 50.f;
+
+        std::vector<Maths::Vector2i> path;
     };
 
 }

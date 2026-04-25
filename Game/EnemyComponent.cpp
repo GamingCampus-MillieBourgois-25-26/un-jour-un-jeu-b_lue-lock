@@ -1,4 +1,5 @@
 #include "EnemyComponent.h"
+#include "GameState.h"
 #include "Core/GameObject.h"
 #include "Core/Scene.h"
 #include <cmath>
@@ -36,7 +37,7 @@ namespace TowerDefence {
         if (hp <= 0.f)
         {
             dead = true;
-            GetOwner()->GetScene()->DestroyGameObject(GetOwner());
+            GameState::Get().money += reward; // récompense
         }
     }
 
@@ -53,9 +54,14 @@ namespace TowerDefence {
         {
             GetOwner()->SetPosition(worldTarget);
             currentWaypoint++;
+
             if (currentWaypoint >= static_cast<int>(path.size()))
             {
                 finished = true;
+                // L'ennemi a atteint la fin — dégâts au joueur
+                GameState::Get().playerHP -= damage;
+                if (GameState::Get().playerHP <= 0)
+                    GameState::Get().gameOver = true;
                 return;
             }
             worldTarget = GridToWorld(path[currentWaypoint]);
@@ -76,16 +82,15 @@ namespace TowerDefence {
         if (finished || dead) return;
 
         Maths::Vector2f pos = GetOwner()->GetPosition();
-        float radius = cellSize * 0.35f;
+        float           radius = cellSize * 0.35f;
 
-        // Corps
         sf::CircleShape circle(radius);
         circle.setFillColor(sf::Color::Red);
         circle.setOrigin(sf::Vector2f(radius, radius));
         circle.setPosition(sf::Vector2f(pos.x, pos.y));
         window->draw(circle);
 
-        // Barre de vie 
+        // Barre de vie
         float barW = cellSize * 0.8f;
         float barH = 5.f;
         float barX = pos.x - barW * 0.5f;
@@ -103,13 +108,11 @@ namespace TowerDefence {
         window->draw(hpBar);
     }
 
-
     void EnemyComponent::Present()
     {
         if (dead || finished)
             GetOwner()->MarkForDeletion();
     }
-
 
     bool EnemyComponent::IsFinished() const { return finished; }
     bool EnemyComponent::IsDead()     const { return dead; }

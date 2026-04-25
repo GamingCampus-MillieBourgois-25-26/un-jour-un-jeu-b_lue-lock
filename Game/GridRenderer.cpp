@@ -22,5 +22,13 @@ namespace TowerDefence {
                 window->draw(cellShape);
             }
         }
+
+        for (const auto& cell : path) {
+
+            sf::RectangleShape pathCell(sf::Vector2f(cellSize - 2.f, cellSize - 2.f));
+            pathCell.setFillColor(sf::Color(180, 140, 80, 120));
+            pathCell.setPosition(sf::Vector2f(cell.x * cellSize + 1.f, cell.y * cellSize + 1.f));
+            window->draw(pathCell);
+        }
     }
 }

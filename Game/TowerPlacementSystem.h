@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Core/Component.h"
 #include "CellType.h"
 #include "Maths/Vector2.h"
@@ -7,9 +7,7 @@
 namespace TowerDefence {
 
     class TowerPlacementSystem : public Component {
-
     public:
-
         void SetConfig(
             std::vector<std::vector<CellType>>* grid,
             const std::vector<Maths::Vector2i>& enemyPath,
@@ -17,12 +15,12 @@ namespace TowerDefence {
         );
 
         void Update(float dt) override;
-        void Present() override;
+        void Present()        override;
+
+        int towerCost = 50;   // ← coût d'une tour
 
     private:
-
         bool CanPlace(int gx, int gy) const;
-        void PlaceTower(int gx, int gy);
 
         Maths::Vector2f GridToWorld(int gx, int gy) const;
 
@@ -35,7 +33,6 @@ namespace TowerDefence {
 
         bool wasClickedLastFrame = false;
         bool pendingPlacement = false;
-
         int  pendingGx = 0;
         int  pendingGy = 0;
     };

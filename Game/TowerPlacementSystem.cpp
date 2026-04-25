@@ -1,6 +1,7 @@
 ﻿#include "TowerPlacementSystem.h"
 #include "TowerComponent.h"
 #include "SpawnQueue.h"
+#include "GameState.h"
 #include "Core/Scene.h"
 #include "Core/GameObject.h"
 #include "InputModule.h"
@@ -21,6 +22,8 @@ namespace TowerDefence {
 
     void TowerPlacementSystem::Update(float dt)
     {
+        if (GameState::Get().gameOver || GameState::Get().victory) return;
+
         bool clicking = InputModule::GetMouseButtonDown(sf::Mouse::Button::Left);
 
         if (clicking && !wasClickedLastFrame)
@@ -29,9 +32,10 @@ namespace TowerDefence {
             int gx = static_cast<int>(mouse.x / cellSize);
             int gy = static_cast<int>(mouse.y / cellSize);
 
-            if (CanPlace(gx, gy))
+            if (CanPlace(gx, gy) && GameState::Get().money >= towerCost)
             {
-                (*grid)[gy][gx] = CellType::Tower; // réservation immédiate
+                GameState::Get().money -= towerCost;
+                (*grid)[gy][gx] = CellType::Tower;
                 pendingPlacement = true;
                 pendingGx = gx;
                 pendingGy = gy;
@@ -60,7 +64,6 @@ namespace TowerDefence {
             });
     }
 
-
     bool TowerPlacementSystem::CanPlace(int gx, int gy) const
     {
         if (gx < 0 || gx >= gridWidth || gy < 0 || gy >= gridHeight)
@@ -71,17 +74,6 @@ namespace TowerDefence {
             if (cell.x == gx && cell.y == gy)
                 return false;
         return true;
-    }
-
-    void TowerPlacementSystem::PlaceTower(int gx, int gy)
-    {
-        (*grid)[gy][gx] = CellType::Tower;
-
-        Scene* scene = GetOwner()->GetScene();
-        GameObject* obj = scene->CreateGameObject("Tower");
-        auto* tower = obj->CreateComponent<TowerComponent>();
-        tower->cellSize = cellSize;
-        obj->SetPosition(GridToWorld(gx, gy));
     }
 
     Maths::Vector2f TowerPlacementSystem::GridToWorld(int gx, int gy) const

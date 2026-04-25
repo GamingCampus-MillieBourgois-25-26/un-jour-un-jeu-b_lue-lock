@@ -1,5 +1,8 @@
 ﻿#include "TowerDefenseScene.h"
-#include "SpawnFlusher.h"
+#include "SpawnQueue.h"
+#include "SceneModule.h"    // ← ajoute
+#include "Engine.h"         // ← ajoute
+#include "ModuleManager.h"  // ← ajoute
 
 namespace TowerDefence {
 
@@ -33,10 +36,14 @@ namespace TowerDefence {
         auto* placement = placementObj->CreateComponent<TowerPlacementSystem>();
         placement->SetConfig(&grid, enemyPath, GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
 
-        // SpawnFlusher — doit être le DERNIER GameObject créé
-        // pour que son Present() s'exécute après tous les autres
-        GameObject* flusherObj = CreateGameObject("SpawnFlusher");
-        flusherObj->CreateComponent<SpawnFlusher>();
+        // Enregistrer le flush de la SpawnQueue dans SceneModule
+        Engine::GetInstance()
+            ->GetModuleManager()
+            ->GetModule<SceneModule>()
+            ->onPresent = []()
+            {
+                SpawnQueue::Get().Flush();
+            };
     }
 
     void TowerDefenseScene::InitGrid()

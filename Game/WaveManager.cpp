@@ -1,5 +1,6 @@
 ﻿#include "WaveManager.h"
 #include "SpawnQueue.h"
+#include "GameState.h"
 #include "Core/GameObject.h"
 #include "Core/Scene.h"
 
@@ -13,6 +14,7 @@ namespace TowerDefence {
 
     void WaveManager::Start()
     {
+        maxWaves = GameState::Get().maxWaves;
         spawnTimer = spawnInterval;
         started = true;
     }
@@ -20,6 +22,9 @@ namespace TowerDefence {
     void WaveManager::Update(float dt)
     {
         if (!started || allWavesDone) return;
+        if (GameState::Get().gameOver) return;
+
+        GameState::Get().currentWave = currentWave;
 
         if (wavePending)
         {
@@ -47,7 +52,12 @@ namespace TowerDefence {
         else
         {
             if (currentWave >= maxWaves)
+            {
                 allWavesDone = true;
+                // Victoire seulement si le joueur est encore en vie
+                if (!GameState::Get().gameOver)
+                    GameState::Get().victory = true;
+            }
             else
             {
                 wavePending = true;
@@ -61,12 +71,10 @@ namespace TowerDefence {
         while (pendingSpawns > 0)
         {
             pendingSpawns--;
-
             Scene* scene = GetOwner()->GetScene();
-            std::vector<Maths::Vector2i> path = enemyPath;
-            float                        cs = cellSize;
+            auto        path = enemyPath;
+            float       cs = cellSize;
 
-            // ID unique pour que FindGameObject distingue chaque ennemi
             static int enemyId = 0;
             std::string name = "Enemy_" + std::to_string(enemyId++);
 
