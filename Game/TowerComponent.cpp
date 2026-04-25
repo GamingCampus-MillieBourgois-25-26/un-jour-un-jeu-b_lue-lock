@@ -1,68 +1,82 @@
-﻿#include "TowerDefenseScene.h"
-#include "SpawnQueue.h"
-#include "GameState.h"
-#include "HUDComponent.h"
-#include "SceneModule.h"
-#include "Engine.h"
-#include "ModuleManager.h"
+﻿#include "TowerComponent.h"
+#include "EnemyComponent.h"
+#include "Core/GameObject.h"
+#include "Core/Scene.h"
+#include <cmath>
 
 namespace TowerDefence {
 
-    TowerDefenseScene::TowerDefenseScene()
-        : Scene("TowerDefenseScene")
+    void TowerComponent::Update(float dt)
     {
-        // Reset de l'état global
-        GameState::Get().Reset();
+        fireTimer += dt;
+        if (fireTimer < 1.f / fireRate)
+            return;
 
-        // Grille visuelle
-        GameObject* gridObj = CreateGameObject("Grid");
-        auto* gridRenderer = gridObj->CreateComponent<GridRenderer>();
-        gridRenderer->width = GRID_WIDTH;
-        gridRenderer->height = GRID_HEIGHT;
-        gridRenderer->cellSize = CELL_SIZE;
+        fireTimer = 0.f;
 
-        InitGrid();
+        EnemyComponent* target = FindClosestEnemy();
+        if (target)
+        {
+            target->TakeDamage(damage);
+            hasPendingShot = true;
+            pendingTarget = target->GetOwner()->GetName();
+        }
+    }
 
-        enemyPath = {
-            {0,2},{1,2},{2,2},{3,2},{4,2},
-            {5,2},{6,2},{7,2},{8,2},{9,2},
-            {9,3},{9,4},{9,5},{9,6},{9,7},
-            {10,7},{11,7},{12,7},{13,7},{14,7},
-            {15,7},{16,7},{17,7},{18,7},{19,7}
-        };
+    void TowerComponent::Render(sf::RenderWindow* window)
+    {
+        Maths::Vector2f pos = GetOwner()->GetPosition();
+        float radius = cellSize * 0.4f;
 
-        // Colorer le chemin sur la grille
-        gridRenderer->path = enemyPath;
+        // Corps de la tour
+        sf::CircleShape body(radius);
+        body.setFillColor(color);
+        body.setPosition({ pos.x - radius, pos.y - radius });
+        window->draw(body);
 
-        // WaveManager
-        GameObject* waveObj = CreateGameObject("WaveManager");
-        auto* waveManager = waveObj->CreateComponent<WaveManager>();
-        waveManager->SetConfig(enemyPath, CELL_SIZE);
+        // Cercle de portée (semi-transparent)
+        sf::CircleShape rangeCircle(range);
+        rangeCircle.setFillColor(sf::Color::Transparent);
+        rangeCircle.setOutlineColor(sf::Color(255, 255, 255, 60));
+        rangeCircle.setOutlineThickness(1.f);
+        rangeCircle.setPosition({ pos.x - range, pos.y - range });
+        window->draw(rangeCircle);
+    }
 
-        // TowerPlacementSystem
-        GameObject* placementObj = CreateGameObject("PlacementSystem");
-        auto* placement = placementObj->CreateComponent<TowerPlacementSystem>();
-        placement->SetConfig(&grid, enemyPath, GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
-        placement->towerCost = 50;
+    void TowerComponent::Present()
+    {
+        hasPendingShot = false;
+        pendingTarget.clear();
+    }
 
-        // HUD
-        GameObject* hudObj = CreateGameObject("HUD");
-        auto* hud = hudObj->CreateComponent<HUDComponent>();
-        hud->towerCost = placement->towerCost;
+    EnemyComponent* TowerComponent::FindClosestEnemy()
+    {
+        EnemyComponent* closest = nullptr;
+        float minDist = range;
 
-        // Callback flush SpawnQueue
-        Engine::GetInstance()
-            ->GetModuleManager()
-            ->GetModule<SceneModule>()
-            ->onPresent = []()
+        Maths::Vector2f pos = GetOwner()->GetPosition();
+        Scene* scene = GetOwner()->GetScene();
+        if (!scene)
+            return nullptr;
+
+        for (const auto& go : scene->GetGameObjects())
+        {
+            auto* enemy = go->GetComponent<EnemyComponent>();
+            if (!enemy || enemy->IsDead() || enemy->IsFinished())
+                continue;
+
+            Maths::Vector2f ePos = go->GetPosition();
+            float dx = ePos.x - pos.x;
+            float dy = ePos.y - pos.y;
+            float dist = std::sqrt(dx * dx + dy * dy);
+
+            if (dist < minDist)
             {
-                SpawnQueue::Get().Flush();
-            };
+                minDist = dist;
+                closest = enemy;
+            }
+        }
+        return closest;
     }
 
-    void TowerDefenseScene::InitGrid()
-    {
-        grid.assign(GRID_HEIGHT, std::vector<CellType>(GRID_WIDTH, CellType::Empty));
-    }
-
-}
+} // namespace TowerDefence
