@@ -12,7 +12,7 @@ public:
     {
         Maths::Vector2<float> position = GetOwner()->GetPosition();
 
-        // --- MOUVEMENT ---
+        // MOUVEMENT
         if (InputModule::GetKey(sf::Keyboard::Key::D))
         {
             position.x += speed * _delta_time;
@@ -30,13 +30,12 @@ public:
             position.y += speed * _delta_time;
         }
 
-        // --- LIMITES DE L'ÉCRAN (CLAMPING) ---
+        // LIMITES DE L'ÉCRAN
         float screenWidth = 800.f;
         float screenHeight = 800.f;
         float halfW = 0.f;
         float halfH = 0.f;
 
-        // On récupère la taille via le collider pour un blocage précis
         auto* col = GetOwner()->GetComponent<SquareCollider>();
         if (col)
         {
@@ -54,7 +53,7 @@ public:
 
         GetOwner()->SetPosition(position);
 
-        // --- ROTATION ---
+        // ROTATION
         Maths::Vector2f mousePos(
             (float)InputModule::GetMousePosition().x,
             (float)InputModule::GetMousePosition().y
@@ -67,7 +66,7 @@ public:
         float spriteOffset = 180.f;
         GetOwner()->SetRotation(sf::degrees(angle + spriteOffset));
 
-        // --- QUITTER ---
+        // QUITTER
         if (InputModule::GetKeyDown(sf::Keyboard::Key::Escape))
         {
             Engine::GetInstance()->RequestQuit();

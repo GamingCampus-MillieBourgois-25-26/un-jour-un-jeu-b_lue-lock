@@ -8,8 +8,6 @@ Scene::Scene(const std::string& _name, const bool _enabled_at_start)
     enabled = _enabled_at_start;
 }
 
-// --- CYCLE DE VIE ---
-
 void Scene::Awake() const
 {
     for (size_t i = 0; i < gameObjects.size(); ++i)
@@ -30,7 +28,6 @@ void Scene::Update(const float _delta_time)
 {
     if (!enabled) return;
 
-    // 1. GESTION DES CRÉATIONS (On laisse au début pour que l'objet existe dès cette frame)
     if (!pendingObjects.empty()) {
         for (auto& obj : pendingObjects) {
             obj->Awake();
@@ -40,14 +37,11 @@ void Scene::Update(const float _delta_time)
         pendingObjects.clear();
     }
 
-    // 2. MISE À JOUR DES OBJETS
     for (size_t i = 0; i < gameObjects.size(); ++i)
     {
         if (gameObjects[i]) gameObjects[i]->Update(_delta_time);
     }
 
-    // 3. GESTION DES DESTRUCTIONS (DÉPLACÉ ICI)
-    // En supprimant ici, l'objet ne sera PAS présent pour la phase de Render() qui suit !
     if (!objectsToDestroy.empty()) {
         for (const auto* target : objectsToDestroy) {
             std::erase_if(gameObjects, [target](const std::unique_ptr<GameObject>& obj) {
@@ -57,8 +51,6 @@ void Scene::Update(const float _delta_time)
         objectsToDestroy.clear();
     }
 }
-
-// --- RENDU ET GUI ---
 
 void Scene::PreRender() const
 {
@@ -116,8 +108,6 @@ void Scene::Present() const
     }
 }
 
-// --- ÉTATS ET NETTOYAGE ---
-
 void Scene::OnEnable() const
 {
     for (size_t i = 0; i < gameObjects.size(); ++i)
@@ -150,8 +140,6 @@ void Scene::Finalize() const
     }
 }
 
-// --- GESTION DES GAMEOBJECTS ---
-
 GameObject* Scene::CreateGameObject(const std::string& _name)
 {
     auto game_object = std::make_unique<GameObject>();
@@ -175,8 +163,6 @@ GameObject* Scene::FindGameObject(const std::string& _name) const
     }
     return nullptr;
 }
-
-// --- ACCESSEURS ET FLAGS ---
 
 const std::string& Scene::GetName() const { return name; }
 

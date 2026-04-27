@@ -10,7 +10,6 @@ public:
 
     void Update(float deltaTime) override;
 
-    // Paramètres de l'arme
     float fireRate = 0.23f;
     float timer = 0.0f;
 };

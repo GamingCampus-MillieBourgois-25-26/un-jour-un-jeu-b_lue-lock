@@ -3,9 +3,9 @@
 //
 //enum class GamePhase {
 //    Asteroids1,
-//    BulletHell,  // On garde le nom original
+//    BulletHell,
 //    Asteroids2,
-//    BulletHell2  // On ajoute juste celle-ci
+//    BulletHell2
 //};
 //
 //class EnemyManager : public Component {

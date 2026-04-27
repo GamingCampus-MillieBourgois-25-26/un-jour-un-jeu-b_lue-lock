@@ -19,14 +19,12 @@ private:
     int m_gems = 0;
     bool can_Click = true;
 
-    // --- SYSTEME D'UPGRADE ---
     int m_autoCoinCount = 0;
     float m_autoCoinTimer = 0.0f;
-    float m_autoCoinDelay = 5.0f;   // N'est plus 'const' car il va diminuer
-    float m_autoCoinPrice = 50.0f;  // Le prix devient flottant pour la précision du calcul
+    float m_autoCoinDelay = 5.0f;
+    float m_autoCoinPrice = 50.0f;
 
-    // --- VISUEL FEEDBACK ---
     GameObject* m_feedbackIcon = nullptr;
-    SpriteRenderer* m_iconRenderer = nullptr; // Pour un accès direct
+    SpriteRenderer* m_iconRenderer = nullptr;
     float m_iconDisplayTimer = 0.0f;
 };

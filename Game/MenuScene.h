@@ -7,7 +7,6 @@
 class MenuScene final : public Scene
 {
 public:
-    // On garde "true" car c'est la SEULE scène qui doit être active au début
     MenuScene() : Scene("MenuScene", true)
     {
         GameObject* menuManager = CreateGameObject("MenuManager");

@@ -4,16 +4,16 @@
 #include "Core/GameObject.h"
 #include "Engine.h"
 #include "Modules/SceneModule.h"
-#include "Core/Scene.h" // Ajouté pour accéder à DestroyGameObject
+#include "Core/Scene.h"
 
 void Bullet::Update(float deltaTime) {
     GameObject* owner = GetOwner();
     if (!owner) return;
 
-    // 1. Déplacement
+    // Déplacement
     owner->SetPosition(owner->GetPosition() + (direction * speed * deltaTime));
 
-    // 2. Récupération des modules et de la scène
+    // Récupération des modules et de la scène
     auto* sm = Engine::GetInstance()->GetModuleManager()->GetModule<SceneModule>();
     if (!sm) return;
 
@@ -25,7 +25,6 @@ void Bullet::Update(float deltaTime) {
 
     // 3. Détection de collision
     if (this->isEnemy) {
-        // --- LOGIQUE DE LA PLUIE (Ennemis -> Joueur) ---
         GameObject* player = scene->FindGameObject("Player");
         if (player) {
             auto* playerCol = player->GetComponent<SquareCollider>();
@@ -33,14 +32,13 @@ void Bullet::Update(float deltaTime) {
                 auto* h = player->GetComponent<Health>();
                 if (h) h->TakeDamage(1);
 
-                // Destruction explicite via la scène
                 scene->DestroyGameObject(owner);
                 return;
             }
         }
     }
     else {
-        // --- LOGIQUE DES TIRS DU JOUEUR (Joueur -> Ennemis) ---
+        // LOGIQUE DES TIRS DU JOUEUR
         for (const auto& obj : scene->GetGameObjects()) {
 
             if (obj->GetName() != "Enemy" || obj.get() == owner) continue;
@@ -54,14 +52,12 @@ void Bullet::Update(float deltaTime) {
                     Logger::Log(ELogLevel::Debug, "Impact! Vie de l'ennemi : {}", h->currentHealth);
                 }
 
-                // Destruction explicite via la scène
                 scene->DestroyGameObject(owner);
                 return;
             }
         }
     }
 
-    // 4. Auto-destruction (Si la balle ne touche rien après 5s)
     lifetime += deltaTime;
     if (lifetime > 5.0f) {
         scene->DestroyGameObject(owner);

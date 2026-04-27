@@ -7,7 +7,7 @@
 #include "Modules/SceneModule.h"
 #include "Core/Scene.h"
 #include "Components/SpriteRenderer.h"
-#include "Components/RectangleShapeRenderer.h" // Ajouté pour le laser
+#include "Components/RectangleShapeRenderer.h"
 #include "SquareCollider.h"
 #include "Assets/Texture.h"
 #include "Modules/AssetsModule.h"
@@ -17,25 +17,19 @@ void AsteroidSpawner::Update(float dt)
 {
     if (!isEnabled) return;
 
-    // --- Gestion des Timers ---
     timer += dt;
     if (canSpawnLaser) {
         laserTimer += dt;
     }
 
-    // 1. Récupérer le module de scène
     auto* sm = Engine::GetInstance()->GetModuleManager()->GetModule<SceneModule>();
     if (!sm) return;
 
-    // 2. Récupérer la scène par son nom (C'est la solution la plus simple)
-    // On utilise "BulletHell" car c'est le nom qu'on a mis dans BulletHellScene.h
     Scene* scene = sm->GetSceneByName("BulletHell");
 
-    // 3. Sécurité : si la scène n'est pas encore chargée, on sort
     if (!scene) return;
 
-    // 1. SPAWN ASTÉROÏDES
-    // =========================
+    // SPAWN ASTÉROÏDES
     if (timer >= spawnRate)
     {
         timer = 0.f;
@@ -61,8 +55,7 @@ void AsteroidSpawner::Update(float dt)
         }
     }
 
-    // 2. SPAWN LASER
-    // =========================
+    // SPAWN LASER
     if (canSpawnLaser && laserTimer >= 4.0f)
     {
         laserTimer = 0.f;

@@ -9,6 +9,6 @@ public:
 
 private:
     float spawnTimer = 0.0f;
-    float spawnRate = 0.25f; // Pluie plus rapide pour bien voir l'effet
-    float angle = 0.0f;     // L'angle actuel du spawn
+    float spawnRate = 0.25f;
+    float angle = 0.0f;
 };

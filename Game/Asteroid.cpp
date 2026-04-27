@@ -11,12 +11,12 @@ void Asteroid::Update(float dt)
     GameObject* owner = GetOwner();
     if (!owner) return;
 
-    // 1. Déplacement
+    // Déplacement
     auto pos = owner->GetPosition();
     pos.y += speed * dt;
     owner->SetPosition(pos);
 
-    // 2. Récupération sécurisée de la scène
+    // Récupération sécurisée de la scène
     auto* mm = Engine::GetInstance()->GetModuleManager();
     auto* sceneModule = mm->GetModule<SceneModule>();
     if (!sceneModule) return;
@@ -24,7 +24,7 @@ void Asteroid::Update(float dt)
     Scene* scene = sceneModule->GetSceneByName("BulletHell");
     if (!scene) return;
 
-    // 3. Collision avec le joueur
+    // Collision avec le joueur
     GameObject* player = scene->FindGameObject("Player");
     if (player)
     {
@@ -36,16 +36,13 @@ void Asteroid::Update(float dt)
             auto* hp = player->GetComponent<Health>();
             if (hp) hp->TakeDamage(1);
 
-            // CORRECTION : Destruction via l'autorité de la scène
             scene->DestroyGameObject(owner);
             return;
         }
     }
 
-    // 4. Destruction si hors écran
     if (pos.y > 1000.f)
     {
-        // CORRECTION : Destruction via l'autorité de la scène
         scene->DestroyGameObject(owner);
         return;
     }
