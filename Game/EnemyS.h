@@ -16,7 +16,8 @@ namespace BulletHell {
         EnemyPattern  pattern = EnemyPattern::Line;
 
         // Mouvement
-        Maths::Vector2f velocity = { 0.f, 60.f };
+        Maths::Vector2f velocity = Maths::Vector2f(0.f, 60.f);
+    
 
         bool IsDead()   const { return dead; }
         void TakeDamage(float dmg);
@@ -29,6 +30,7 @@ namespace BulletHell {
         float shootTimer = 0.f;
         float shootRate = 1.8f;
         float angle = 0.f;   // pour la spirale
+
         bool  dead = false;
         bool  done = false;
 

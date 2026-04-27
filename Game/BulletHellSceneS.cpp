@@ -13,7 +13,7 @@ namespace BulletHell {
 
         // Joueur
         GameObject* playerObj = CreateGameObject("Player");
-        playerObj->SetPosition({ 500.f, 500.f });
+        playerObj->SetPosition(Maths::Vector2f(500.f, 500.f));  
         playerObj->CreateComponent<PlayerS>();
 
         // WaveManager

@@ -10,24 +10,46 @@ namespace BulletHell {
         // Vague 1 — ennemis en ligne
         WaveData w1;
         for (int i = 0; i < 5; i++)
-            w1.enemies.push_back({ { 150.f + i * 150.f, -40.f },
-                                   EnemyPattern::Line, { 0.f, 50.f }, 3.f });
+            w1.enemies.push_back({
+                Maths::Vector2f(150.f + i * 150.f, -40.f),
+                EnemyPattern::Line,
+                Maths::Vector2f(0.f, 50.f),
+                3.f
+                });
         waves.push_back(w1);
 
         // Vague 2 — spirale + ligne
         WaveData w2;
-        w2.enemies.push_back({ { 500.f, -40.f }, EnemyPattern::Spiral, { 0.f, 35.f }, 6.f });
+        w2.enemies.push_back({
+            Maths::Vector2f(500.f, -40.f),
+            EnemyPattern::Spiral,
+            Maths::Vector2f(0.f, 35.f),
+            6.f
+            });
         for (int i = 0; i < 4; i++)
-            w2.enemies.push_back({ { 100.f + i * 200.f, -40.f },
-                                   EnemyPattern::Line, { 0.f, 55.f }, 3.f });
+            w2.enemies.push_back({
+                Maths::Vector2f(100.f + i * 200.f, -40.f),
+                EnemyPattern::Line,
+                Maths::Vector2f(0.f, 55.f),
+                3.f
+                });
         waves.push_back(w2);
 
         // Vague 3 — burst + spirale
         WaveData w3;
         for (int i = 0; i < 3; i++)
-            w3.enemies.push_back({ { 200.f + i * 300.f, -40.f },
-                                   EnemyPattern::Burst, { 0.f, 40.f }, 5.f });
-        w3.enemies.push_back({ { 500.f, -40.f }, EnemyPattern::Spiral, { 0.f, 30.f }, 8.f });
+            w3.enemies.push_back({
+                Maths::Vector2f(200.f + i * 300.f, -40.f),
+                EnemyPattern::Burst,
+                Maths::Vector2f(0.f, 40.f),
+                5.f
+                });
+        w3.enemies.push_back({
+            Maths::Vector2f(500.f, -40.f),
+            EnemyPattern::Spiral,
+            Maths::Vector2f(0.f, 30.f),
+            8.f
+            });
         waves.push_back(w3);
     }
 

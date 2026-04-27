@@ -1,21 +1,24 @@
-#pragma once
+﻿#pragma once
 #include "Core/Component.h"
 #include <SFML/Graphics.hpp>
 
 namespace BulletHell {
+    class BHHUD : public Component {
 
-    class BHHUD : public Component
-    {
     public:
+
+        BHHUD() = default;
+        BHHUD(const BHHUD&) = delete;
+        BHHUD& operator=(const BHHUD&) = delete;
+
         void Start()  override;
         void Render(sf::RenderWindow* window) override;
 
     private:
-        sf::Font font;
-        bool     fontLoaded = false;
 
+        sf::Font* fontPtr = nullptr;  // ← pointeur vers font statique
+        bool      fontLoaded = false;
         void DrawText(sf::RenderWindow* w, const std::string& txt,
             float x, float y, unsigned sz, sf::Color col);
     };
-
 }

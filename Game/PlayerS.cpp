@@ -20,9 +20,8 @@ namespace BulletHell {
             BHGameState::Get().gameOver = true;
     }
 
-    void PlayerS::HandleMovement(float dt)
-    {
-        Maths::Vector2f move = { 0.f, 0.f };
+    void PlayerS::HandleMovement(float dt) {
+        Maths::Vector2f move = Maths::Vector2f(0.f, 0.f);
         if (InputModule::GetKey(sf::Keyboard::Key::Z)) move.y -= 1.f;
         if (InputModule::GetKey(sf::Keyboard::Key::S)) move.y += 1.f;
         if (InputModule::GetKey(sf::Keyboard::Key::Q)) move.x -= 1.f;

@@ -4,10 +4,12 @@
 
 namespace BulletHell {
 
-    class BulletS : public Component
-    {
+    class BulletS : public Component {
+
     public:
-        Maths::Vector2f direction = { 0.f, -1.f };
+
+        Maths::Vector2f direction = Maths::Vector2f(0.f, -1.f);
+
         float           speed = 600.f;
         bool            isEnemy = false;   // true = balle ennemie
         float           radius = 5.f;
@@ -17,6 +19,7 @@ namespace BulletHell {
         void Present() override;
 
     private:
+
         bool done = false;
     };
 
