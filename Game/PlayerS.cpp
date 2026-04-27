@@ -1,6 +1,6 @@
 #include "PlayerS.h"
 #include "BulletS.h"
-
+#include "SpawnQueue.h" 
 #include "Core/GameObject.h"
 #include "Core/Scene.h"
 #include "Modules/InputModule.h"
@@ -40,20 +40,27 @@ namespace BulletHell {
     {
         Scene* scene = GetOwner()->GetScene();
         if (!scene) return;
-
         Maths::Vector2f pos = GetOwner()->GetPosition();
 
-        // Deux balles légèrement décalées
         for (float offX : { -8.f, 8.f })
         {
             static int bid = 0;
-            GameObject* obj = scene->CreateGameObject("PBullet_" + std::to_string(bid++));
-            obj->SetPosition({ pos.x + offX, pos.y - 10.f });
-            auto* b = obj->CreateComponent<BulletS>();
-            obj->SetPosition(Maths::Vector2f(pos.x + offX, pos.y - 10.f));
-            b->speed = 700.f;
-            b->isEnemy = false;
-            b->radius = 5.f;
+            std::string name = "PBullet_" + std::to_string(bid++);
+            Maths::Vector2f spawnPos = Maths::Vector2f(pos.x + offX, pos.y - 10.f);
+
+            TowerDefence::SpawnQueue::Get().Push([scene, name, spawnPos]() {
+
+                    GameObject* obj = scene->CreateGameObject(name);
+
+                    obj->SetPosition(spawnPos);
+
+                    auto* b = obj->CreateComponent<BulletS>();
+
+                    b->direction = Maths::Vector2f(0.f, -1.f);
+                    b->speed = 700.f;
+                    b->isEnemy = false;
+                    b->radius = 5.f;
+                });
         }
     }
 

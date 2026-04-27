@@ -1,6 +1,7 @@
 #include "EnemyS.h"
 #include "BulletS.h"
 #include "BHGameState.h"
+#include "SpawnQueue.h"
 #include "Core/GameObject.h"
 #include "Core/Scene.h"
 #include <cmath>
@@ -14,32 +15,35 @@ namespace BulletHell {
     {
         if (dead) return;
         hp -= dmg;
-        if (hp <= 0.f)
-        {
-            dead = true;
-            BHGameState::Get().score += scoreValue;
-        }
+        if (hp <= 0.f) { dead = true; BHGameState::Get().score += scoreValue; }
+    }
+
+    void EnemyS::SpawnBullet(Scene* scene, Maths::Vector2f pos,
+        Maths::Vector2f dir, float spd, float r)
+    {
+        static int bid = 0;
+        std::string name = "EBullet_" + std::to_string(bid++);
+        TowerDefence::SpawnQueue::Get().Push([scene, name, pos, dir, spd, r]()
+            {
+                GameObject* obj = scene->CreateGameObject(name);
+                obj->SetPosition(pos);
+                auto* b = obj->CreateComponent<BulletS>();
+                b->direction = dir;
+                b->speed = spd;
+                b->isEnemy = true;
+                b->radius = r;
+            });
     }
 
     void EnemyS::ShootLine()
     {
         Scene* scene = GetOwner()->GetScene();
         Maths::Vector2f pos = GetOwner()->GetPosition();
-
-        // 3 balles vers le bas
         for (int i = -1; i <= 1; i++)
         {
-            static int eid = 0;
-            GameObject* obj = scene->CreateGameObject("EBullet_" + std::to_string(eid++));
-            obj->SetPosition(pos);
-            auto* b = obj->CreateComponent<BulletS>();
-            b->direction = Maths::Vector2f(i * 0.3f, 1.f);
-            float len = std::sqrt(b->direction.x * b->direction.x + b->direction.y * b->direction.y);
-            b->direction.x /= len;
-            b->direction.y /= len;
-            b->speed   = 220.f;
-            b->isEnemy = true;
-            b->radius  = 6.f;
+            float dx = i * 0.3f, dy = 1.f;
+            float len = std::sqrt(dx * dx + dy * dy);
+            SpawnBullet(scene, pos, Maths::Vector2f(dx / len, dy / len), 220.f, 6.f);
         }
     }
 
@@ -47,21 +51,12 @@ namespace BulletHell {
     {
         Scene* scene = GetOwner()->GetScene();
         Maths::Vector2f pos = GetOwner()->GetPosition();
-
-        angle += 180.f * dt;  // rotation de la spirale
+        angle += 180.f * dt;
         float rad = angle * PI / 180.f;
-
         for (int i = 0; i < 4; i++)
         {
             float a = rad + i * (PI / 2.f);
-            static int sid = 0;
-            GameObject* obj = scene->CreateGameObject("EBullet_" + std::to_string(sid++));
-            obj->SetPosition(pos);
-            auto* b = obj->CreateComponent<BulletS>();
-            b->direction = Maths::Vector2f(std::cos(a), std::sin(a));
-            b->speed   = 180.f;
-            b->isEnemy = true;
-            b->radius  = 5.f;
+            SpawnBullet(scene, pos, Maths::Vector2f(std::cos(a), std::sin(a)), 180.f, 5.f);
         }
     }
 
@@ -69,42 +64,24 @@ namespace BulletHell {
     {
         Scene* scene = GetOwner()->GetScene();
         Maths::Vector2f pos = GetOwner()->GetPosition();
-
-        // 8 balles dans toutes les directions
         for (int i = 0; i < 8; i++)
         {
             float a = i * (2.f * PI / 8.f);
-            static int bid = 0;
-            GameObject* obj = scene->CreateGameObject("EBullet_" + std::to_string(bid++));
-            obj->SetPosition(pos);
-            auto* b = obj->CreateComponent<BulletS>();
-            b->direction = Maths::Vector2f(std::cos(a), std::sin(a));
-            b->speed   = 160.f;
-            b->isEnemy = true;
-            b->radius  = 6.f;
+            SpawnBullet(scene, pos, Maths::Vector2f(std::cos(a), std::sin(a)), 160.f, 6.f);
         }
     }
 
     void EnemyS::Update(float dt)
     {
         if (dead || done || BHGameState::Get().gameOver) return;
-
-        // Mouvement
         Maths::Vector2f pos = GetOwner()->GetPosition();
         pos.x += velocity.x * dt;
         pos.y += velocity.y * dt;
         GetOwner()->SetPosition(pos);
-
-        // Hors écran par le bas
         if (pos.y > 660.f) { done = true; return; }
-
-        // Tir
         shootTimer += dt;
-
         if (pattern == EnemyPattern::Spiral)
-        {
-            ShootSpiral(dt);  // continu
-        }
+            ShootSpiral(dt);
         else if (shootTimer >= shootRate)
         {
             shootTimer = 0.f;
@@ -116,13 +93,10 @@ namespace BulletHell {
     void EnemyS::Render(sf::RenderWindow* window)
     {
         if (dead || done) return;
-
         Maths::Vector2f pos = GetOwner()->GetPosition();
-
         sf::CircleShape body(radius);
         body.setOrigin({ radius, radius });
         body.setPosition({ pos.x, pos.y });
-
         sf::Color col = sf::Color(80, 200, 80);
         if (pattern == EnemyPattern::Spiral) col = sf::Color(200, 80, 200);
         if (pattern == EnemyPattern::Burst)  col = sf::Color(200, 140, 30);
@@ -134,8 +108,6 @@ namespace BulletHell {
 
     void EnemyS::Present()
     {
-        if (dead || done)
-            GetOwner()->MarkForDeletion();
+        if (dead || done) GetOwner()->MarkForDeletion();
     }
-
 }

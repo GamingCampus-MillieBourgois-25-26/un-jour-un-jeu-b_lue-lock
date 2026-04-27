@@ -27,12 +27,16 @@ namespace BulletHell {
         void Present() override;
 
     private:
+
         float shootTimer = 0.f;
         float shootRate = 1.8f;
-        float angle = 0.f;   // pour la spirale
+        float angle = 0.f;
 
         bool  dead = false;
         bool  done = false;
+
+        void SpawnBullet(Scene* scene, Maths::Vector2f pos,  
+            Maths::Vector2f dir, float spd, float r);
 
         void ShootLine();
         void ShootSpiral(float dt);
