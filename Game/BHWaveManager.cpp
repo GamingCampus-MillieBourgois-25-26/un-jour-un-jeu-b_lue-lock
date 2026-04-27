@@ -2,6 +2,7 @@
 #include "BHGameState.h"
 #include "Core/GameObject.h"
 #include "Core/Scene.h"
+#include "SpawnQueue.h" 
 
 namespace BulletHell {
 
@@ -122,7 +123,7 @@ namespace BulletHell {
                 done = true;
                 BHGameState::Get().victory = true;
             }
-            spawnIndex = INT_MAX; // évite de re-rentrer
+            spawnIndex = INT_MAX; 
         }
     }
 
@@ -139,14 +140,23 @@ namespace BulletHell {
         const EnemySpawnInfo& info = wave.enemies[idx];
         Scene* scene = GetOwner()->GetScene();
 
+       
         static int eid = 0;
-        GameObject* obj = scene->CreateGameObject("Enemy_" + std::to_string(eid++));
-        obj->SetPosition(info.position);
+        std::string name = "Enemy_" + std::to_string(eid++);
+        Maths::Vector2f pos = info.position;
+        EnemyPattern    pat = info.pattern;
+        Maths::Vector2f vel = info.velocity;
+        float           hp = info.hp;
 
-        auto* e = obj->CreateComponent<EnemyS>();
-        e->pattern = info.pattern;
-        e->velocity = info.velocity;
-        e->hp = info.hp;
+        TowerDefence::SpawnQueue::Get().Push([scene, name, pos, pat, vel, hp]()
+            {
+                GameObject* obj = scene->CreateGameObject(name);
+                obj->SetPosition(pos);
+                auto* e = obj->CreateComponent<BulletHell::EnemyS>();
+                e->pattern = pat;
+                e->velocity = vel;
+                e->hp = hp;
+            });
     }
 
 }
