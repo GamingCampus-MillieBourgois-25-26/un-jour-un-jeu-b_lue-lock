@@ -37,7 +37,7 @@ namespace TowerDefence {
         if (hp <= 0.f)
         {
             dead = true;
-            GameState::Get().money += reward; // récompense
+            GameState::Get().money += reward; 
         }
     }
 
@@ -55,11 +55,11 @@ namespace TowerDefence {
             GetOwner()->SetPosition(worldTarget);
             currentWaypoint++;
 
-            // Remplace ce bloc dans EnemyComponent::Update :
+            
             if (currentWaypoint >= static_cast<int>(path.size()))
             {
                 finished = true;
-                // Cherche la BaseTower dans la scène pour lui infliger des dégâts
+              
                 Scene* scene = GetOwner()->GetScene();
                 if (scene)
                 {
@@ -71,7 +71,7 @@ namespace TowerDefence {
                     }
                     else
                     {
-                        // Fallback si pas de BaseTower : dégâts directs
+                     
                         GameState::Get().playerHP -= damage;
                         if (GameState::Get().playerHP <= 0)
                             GameState::Get().gameOver = true;

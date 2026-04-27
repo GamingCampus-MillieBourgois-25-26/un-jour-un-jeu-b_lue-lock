@@ -20,7 +20,7 @@ namespace TowerDefence {
         if (target)
         {
             hasPendingShot = true;
-            // On capture le nom ICI, avant que Present() soit appelé
+          
             pendingTarget = target->GetOwner()->GetName();
         }
     }
@@ -30,7 +30,7 @@ namespace TowerDefence {
         Maths::Vector2f pos = GetOwner()->GetPosition();
         float half = cellSize * 0.5f;
 
-        // Corps de la tour (carré bleu centré sur la cellule)
+        
         sf::RectangleShape body(sf::Vector2f(cellSize * 0.8f, cellSize * 0.8f));
         body.setFillColor(color);
         body.setPosition({ pos.x - cellSize * 0.4f, pos.y - cellSize * 0.4f });

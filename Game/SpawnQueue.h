@@ -4,7 +4,7 @@
 
 namespace TowerDefence {
 
-    // File d'attente de créations à exécuter hors de toute itération
+    
     class SpawnQueue
     {
     public:
@@ -21,7 +21,7 @@ namespace TowerDefence {
 
         void Flush()
         {
-            // Copie locale pour éviter les re-entrances
+            
             auto toExecute = std::move(pending);
             pending.clear();
             for (auto& fn : toExecute)

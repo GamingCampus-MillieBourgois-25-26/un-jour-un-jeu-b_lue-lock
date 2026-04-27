@@ -17,7 +17,7 @@ namespace TowerDefence {
         int towerCost = 50;
 
     private:
-        sf::Font* fontPtr = nullptr;   // ← pointeur vers la font statique
+        sf::Font* fontPtr = nullptr;   
         bool      fontLoaded = false;
 
         void DrawText(sf::RenderWindow* window,

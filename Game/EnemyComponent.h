@@ -21,8 +21,8 @@ namespace TowerDefence {
 
         float maxHP = 100.f;
         float hp = 100.f;
-        int   reward = 25;       // argent donné à la mort
-        int   damage = 3;        // dégâts au joueur si arrivé au bout
+        int   reward = 25;       
+        int   damage = 3;        
         float speed = 120.f;
 
         void SetStats(float _maxHp, float _speed, int _reward) {

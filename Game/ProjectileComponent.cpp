@@ -23,7 +23,7 @@ namespace TowerDefence {
         if (!targetObj || targetObj->IsMarkedForDeletion())
         {
             done = true;
-            return; // Present() s'occupera de la destruction
+            return; 
         }
 
         auto* enemy = targetObj->GetComponent<EnemyComponent>();
@@ -41,7 +41,7 @@ namespace TowerDefence {
 
         if (dist <= speed * dt)
         {
-            enemy->TakeDamage(damage); // TakeDamage pose juste un flag, ne détruit rien
+            enemy->TakeDamage(damage); 
             done = true;
         }
         else
@@ -57,7 +57,7 @@ namespace TowerDefence {
 
     void ProjectileComponent::Present()
     {
-        // C'est ici, hors itération, qu'on détruit en sécurité
+        
         if (done)
             GetOwner()->MarkForDeletion();
     }

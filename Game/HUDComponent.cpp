@@ -5,7 +5,7 @@ namespace TowerDefence {
 
     void HUDComponent::Start()
     {
-        // Font statique : chargée une seule fois, jamais détruite/réinitialisée
+        
         static sf::Font sharedFont;
         static bool     sharedFontLoaded = false;
 
@@ -74,7 +74,7 @@ namespace TowerDefence {
         DrawText(window, costStr, 600.f, 8.f, 22,
             gs.money >= towerCost ? sf::Color(100, 255, 100) : sf::Color(200, 80, 80));
 
-        // Game Over — affiché seulement si gameOver est true
+        // Game Over affiché 
         if (gs.gameOver)
         {
             sf::RectangleShape overlay(sf::Vector2f(1000.f, 600.f));
@@ -85,7 +85,7 @@ namespace TowerDefence {
                 220.f, 330.f, 22, sf::Color::White);
         }
 
-        // Victoire — affiché seulement si victory est true
+        // Victoire affiché 
         if (gs.victory)
         {
             sf::RectangleShape overlay(sf::Vector2f(1000.f, 600.f));

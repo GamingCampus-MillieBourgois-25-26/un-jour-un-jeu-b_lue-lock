@@ -9,6 +9,7 @@ namespace TowerDefence {
     {
         hp -= amount;
         // Synchronise avec le GameState pour que le HUD l'affiche
+
         GameState::Get().playerHP = hp;
         if (hp <= 0)
         {
