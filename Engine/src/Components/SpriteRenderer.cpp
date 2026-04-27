@@ -19,16 +19,13 @@ void SpriteRenderer::Render(sf::RenderWindow* _window)
 
     sprite.setTextureRect(rect);
 
-    // TEMP : Affichage de la hitbox si elle existe
     auto* col = GetOwner()->GetComponent<SquareCollider>();
     if (col) {
         col->DebugRender(_window);
     }
 
-    // --- APPLIQUER LA COULEUR ICI ---
     sprite.setColor(color);
 
-    // --- PIVOT CENTER ---
     sf::Vector2f size = static_cast<sf::Vector2f>(texture->GetTexture().getSize());
     sprite.setOrigin(size * 0.5f);
 
